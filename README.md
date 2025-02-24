@@ -13,4 +13,4 @@ docker run -it --cap-add=NET_ADMIN --device /dev/net/tun --name kali-pentest kal
 ## Parar y eliminar contenedor
 ```bash
 docker stop <nombre> && docker rm <nombre>
-```bash
+```
