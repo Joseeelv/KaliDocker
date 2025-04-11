@@ -1,8 +1,9 @@
 FROM kalilinux/kali-rolling:latest
 
-# Actualizar e instalar paquetes esenciales
-RUN apt update && apt upgrade -y && apt install -y \
+# Update and install essential packages
+RUN apt update -y && apt install -y --fix-missing \
     locales \
+    hash-identifier \
     curl \
     wget \
     nano \
@@ -32,9 +33,13 @@ RUN apt update && apt upgrade -y && apt install -y \
     zsh \
     tmux \
     fonts-powerline \
+    tar \
+    seclists \
+    kali-desktop-xfce \
+    xorg \
     && apt clean && rm -rf /var/lib/apt/lists/*
 
-# Configurar localización en español
+# Configure locale to Spanish
 RUN sed -i '/es_ES.UTF-8/s/^# //g' /etc/locale.gen && \
     locale-gen es_ES.UTF-8
 
@@ -42,47 +47,46 @@ ENV LANG=es_ES.UTF-8 \
     LANGUAGE=es_ES:es \
     LC_ALL=es_ES.UTF-8
 
-# Instalar SecLists desde GitHub
-RUN git clone https://github.com/danielmiessler/SecLists.git /opt/seclists
-
-# Definir la variable ZSH para el build
+# Define ZSH variable for the build
 ENV ZSH=/root/.oh-my-zsh
 
-# Instalar Oh My Zsh
+# Install Oh My Zsh
 RUN sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 
-# Instalar Powerlevel10k en el directorio correcto
+# Install Powerlevel10k in the correct directory
 RUN git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH}/custom/themes/powerlevel10k
 
-# Copiar archivo de configuración zsh personalizado
+# Copy custom zsh configuration file
 COPY mi_zshrc.zsh /root/.zshrc
 
-# Asegurar que los archivos tienen los permisos correctos
+# Ensure files have the correct permissions
 RUN chmod 644 /root/.zshrc
 
-# Establecer zsh como shell predeterminada
+# Set zsh as the default shell
 RUN chsh -s $(which zsh)
 
-# Configurar tmux para múltiples sesiones
+# Configure tmux for multiple sessions
 RUN echo "set -g mouse on" >> ~/.tmux.conf
 
-# Definir el directorio de trabajo
+# Define working directory
 WORKDIR /root/Workspace
 
-# Crear directorio HTB
+# Create HTB directory
 RUN mkdir -p /root/Workspace/HTB
 
-# Copiar el archivo .ovpn al contenedor
+# Copy the .ovpn file to the container
 COPY lab_Jhex.ovpn /root/Workspace/HTB/
 
-# Asegurar que el archivo tiene los permisos correctos
+# Ensure the file has the correct permissions
 RUN chmod 600 /root/Workspace/HTB/lab_Jhex.ovpn
 
-# Verificar que powerlevel10k se instaló correctamente
-RUN if [ ! -f ${ZSH}/custom/themes/powerlevel10k/powerlevel10k.zsh-theme ]; then echo "Powerlevel10k no se instaló correctamente. Revisa el Dockerfile."; exit 1; fi
+# Verify that powerlevel10k was installed correctly
+RUN if [ ! -f ${ZSH}/custom/themes/powerlevel10k/powerlevel10k.zsh-theme ]; then echo "Powerlevel10k was not installed correctly. Check the Dockerfile."; exit 1; fi
 
 COPY mi_p10k.zsh /root/.p10k.zsh
 
-# Iniciar zsh y crear una sesión tmux automáticamente
-CMD ["zsh", "-c", "source ~/.zshrc && tmux new-session -s main"]
+RUN gunzip -f /usr/share/wordlists/rockyou.txt.gz
+
+# Start zsh, and create a tmux session automatically
+CMD ["/bin/zsh -c source ~/.zshrc && tmux new-session -s main"]
 
