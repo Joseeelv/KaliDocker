@@ -39,9 +39,19 @@ chmod +x setup.sh
 ```bash
 docker-compose up -d
 ```
+or
+```bash
+make up (launch the container)
+make down (stop the container)
+make restart (restart the container)
+```
 5. **Access the container:**
 ```bash
 docker exec -it kali-box bash
+```
+or
+```bash
+make bash
 ```
 6. **Run the internal setup script:**
 ```bash
