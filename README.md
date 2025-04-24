@@ -1,52 +1,52 @@
-# 🐚 Kali Linux Dev Container
+# Kali Linux Container
 
-Contenedor Docker personalizado basado en Kali Linux con herramientas de pentesting, Zsh, Powerlevel10k y configuración lista para HTB, CTFs y auditorías.
+Custom Docker container based on Kali Linux with pentesting tools, Zsh, Powerlevel10k, and a setup ready for HTB, CTFs, and auditing.
 
 ---
 
-## 📁 Estructura del proyecto
+## Project Structure
 
 <pre>kali-docker/
-├── docker-compose.yml # Define y lanza el contenedor
-├── setup.sh # Script que instala y configura el entorno dentro del contenedor
-└── files/ # Archivos personalizados del usuario
- ├── lab_Jhex.ovpn # Archivo .ovpn de VPN HTB (opcional)
- ├── mi_zshrc.zsh # Configuración personalizada de Zsh
- └── mi_p10k.zsh # Configuración Powerlevel10k
+├── docker-compose.yml # Defines and launches the container
+├── setup.sh # Script that installs and configures the environment inside the container
+└── files/ # User's custom files
+ ├── lab_Jhex.ovpn # HTB VPN .ovpn file (optional)
+ ├── mi_zshrc.zsh # Custom Zsh configuration
+ └── mi_p10k.zsh # Powerlevel10k configuration
 </pre>
    
 ---
 
-## 🚀 Cómo usar
+## How to Use
 
-1. **Clona el repo o descargá los archivos**
+1. **Clone the repo or download the files**
+```bash
+git clone [repo_name]
+```
 
-2. **Agregá tus archivos personalizados** en la carpeta `files/`:
+2. **Add your custom files to the** `files/` **folder:**
    - `mi_zshrc.zsh`
    - `mi_p10k.zsh`
-   - `lab_Jhex.ovpn` (opcional)
+   - `htb.ovpn` (change for your HTB VPN)
 
-3. **Dale permisos al script de configuración:**
+3. **Grant execute permissions to the setup script:**
 
 ```bash
 chmod +x setup.sh
 ```
-Levantá el contenedor:
+4. **Launch the container**:
 ```bash
 docker-compose up -d
 ```
-Accedé al contenedor:
-
+5. **Access the container:**
 ```bash
 docker exec -it kali-box bash
 ```
-Ejecutá el script de configuración interna:
-
+6. **Run the internal setup script:**
 ```bash
 bash /root/setup.sh
 ```
-¡Listo! Ahora podés usar:
-
+7. **Done!** Now you can use:
 ```bash
 zsh
 ```
