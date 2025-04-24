@@ -10,9 +10,9 @@ kali-docker/<br>
 ├── docker-compose.yml # Define y lanza el contenedor<br>
 ├── setup.sh # Script que instala y configura el entorno dentro del contenedor<br>
 └── files/ # Archivos personalizados del usuario <br>
-   ├── lab_Jhex.ovpn # Archivo .ovpn de VPN HTB (opcional)<br>
-   ├── mi_zshrc.zsh # Configuración personalizada de Zsh<br>
-   └── mi_p10k.zsh # Configuración Powerlevel10k<br>
+&Tab├── lab_Jhex.ovpn # Archivo .ovpn de VPN HTB (opcional)<br>
+&Tab├── mi_zshrc.zsh # Configuración personalizada de Zsh<br>
+&Tab└── mi_p10k.zsh # Configuración Powerlevel10k<br>
    
 ---
 
