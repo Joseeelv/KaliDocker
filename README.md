@@ -22,6 +22,7 @@ Custom Docker container based on Kali Linux with pentesting tools, Zsh, Powerlev
 1. **Clone the repo or download the files**
 ```bash
 git clone [repo_name]
+cd [repo_name]
 ```
 
 2. **Add your custom files to the** `files/` **folder:**
