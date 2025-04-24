@@ -1,63 +1,64 @@
-# Kali Linux Container
+# Kali Linux Docker Box
 
-Custom Docker container based on Kali Linux with pentesting tools, Zsh, Powerlevel10k, and a setup ready for HTB, CTFs, and auditing.
+This project provides a custom Docker image based on the official Kali Linux image, preinstalled with a wide selection of security tools, Oh My Zsh with Powerlevel10k, and configurations ready for penetration testing environments such as Hack The Box (HTB).
 
----
+## Features
+
+- Based on `kalilinux/kali-rolling`
+- Preinstalled tools:
+  - `nmap`, `sqlmap`, `hydra`, `wfuzz`, `whatweb`, `evil-winrm`
+  - `net-tools`, `fping`, `dnsutils`, `iputils-ping`, `netcat-traditional`
+  - `wireshark`, `hashcat`, `john`, `hash-identifier`
+  - `metasploit-framework`, `enum4linux`, `wordlists`, `seclists`
+- Development and utility tools:
+  - `curl`, `wget`, `nano`, `git`, `tmux`, `tar`
+- Zsh environment:
+  - Oh My Zsh
+  - Powerlevel10k theme
+  - Custom `.zshrc` and `.p10k.zsh` configurations
 
 ## Project Structure
-
-<pre>kali-docker/
-├── docker-compose.yml # Defines and launches the container
-├── setup.sh # Script that installs and configures the environment inside the container
-└── files/ # User's custom files
- ├── lab_Jhex.ovpn # HTB VPN .ovpn file (optional)
- ├── mi_zshrc.zsh # Custom Zsh configuration
- └── mi_p10k.zsh # Powerlevel10k configuration
+<pre>
+KaliDocker/
+ ├── Dockerfile # Builds the Kali Docker image
+ ├── Makefile # Make commands for build and run
+ ├── HTB/
+ │ └── lab_Jhex.ovpn # VPN configuration file (example)
+ ├── mi_zshrc.zsh # Custom Zsh configuration 
+ └── mi_p10k.zsh # Powerlevel10k theme configuration
 </pre>
-   
----
 
-## How to Use
+## Usage
 
-1. **Clone the repo or download the files**
+### Build the Image
+
+Using Make:
 ```bash
-git clone [repo_name]
-cd [repo_name]
+make build
+```
+Or manually:
+```bash
+docker build -t kali-box .
+```
+### Run the Container
+Using Make:
+```bash
+make run
+```
+Or manually:
+```bash
+docker run -it --privileged kali-box
 ```
 
-2. **Add your custom files to the** `files/` **folder:**
-   - `mi_zshrc.zsh`
-   - `mi_p10k.zsh`
-   - `htb.ovpn` (change for your HTB VPN)
+> Adjust volumes and device permissions according to your use case.
 
-3. **Grant execute permissions to the setup script:**
+## HTB VPN Support
+
+Place your `.ovpn` configuration file inside the `HTB/` directory. Then, inside the container, connect using:
 
 ```bash
-chmod +x setup.sh
+openvpn /HTB/HTB.ovpn
 ```
-4. **Launch the container**:
-```bash
-docker-compose up -d
-```
-or
-```bash
-make up (launch the container)
-make down (stop the container)
-make restart (restart the container)
-```
-5. **Access the container:**
-```bash
-docker exec -it kali-box bash
-```
-or
-```bash
-make bash
-```
-6. **Run the internal setup script:**
-```bash
-bash /root/setup.sh
-```
-7. **Done!** Now you can use:
-```bash
-zsh
-```
+
+
+

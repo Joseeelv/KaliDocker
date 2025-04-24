@@ -1,0 +1,33 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Logs
+*.log
+
+# OS-generated files
+.DS_Store
+Thumbs.db
+
+# Docker
+*.pid
+*.tar
+*.img
+*.bak
+
+# VPN/Secrets (keep your ovpn file safe)
+HTB/*.ovpn
+
+# Build context
+*.swp
+*.swo
+*.tmp
+
+# VSCode and IDE configs
+.vscode/
+.idea/
+
+# Python virtual environments
+venv/
+.env/
