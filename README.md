@@ -7,12 +7,12 @@ Contenedor Docker personalizado basado en Kali Linux con herramientas de pentest
 ## 📁 Estructura del proyecto
 
 kali-docker/ 
-├── docker-compose.yml # Define y lanza el contenedor
-├── setup.sh # Script que instala y configura el entorno dentro del contenedor 
-└── files/ # Archivos personalizados del usuario 
-   ├── lab_Jhex.ovpn # Archivo .ovpn de VPN HTB (opcional)
-   ├── mi_zshrc.zsh # Configuración personalizada de Zsh
-   └── mi_p10k.zsh # Configuración Powerlevel10k
+├── docker-compose.yml # Define y lanza el contenedor<br><br>
+├── setup.sh # Script que instala y configura el entorno dentro del contenedor<br><br>
+└── files/ # Archivos personalizados del usuario <br><br>
+   ├── lab_Jhex.ovpn # Archivo .ovpn de VPN HTB (opcional)<br><br>
+   ├── mi_zshrc.zsh # Configuración personalizada de Zsh<br><br>
+   └── mi_p10k.zsh # Configuración Powerlevel10k<br><br>
    
 ---
 
