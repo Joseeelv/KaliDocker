@@ -23,7 +23,7 @@ KaliDocker/
  ├── Dockerfile # Builds the Kali Docker image
  ├── Makefile # Make commands for build and run
  ├── HTB/
- │ └── lab_Jhex.ovpn # VPN configuration file (example)
+ │ └── vpn.ovpn # VPN configuration file (example)
  ├── mi_zshrc.zsh # Custom Zsh configuration 
  └── mi_p10k.zsh # Powerlevel10k theme configuration
 </pre>
