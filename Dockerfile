@@ -1,43 +1,47 @@
-FROM kalilinux/kali-rolling:latest
+FROM kalilinux/kali-rolling
 
-# Evitar prompts de configuración durante la instalación
 ENV DEBIAN_FRONTEND=noninteractive
 
-# Actualizar sistema y paquetes
+# Instalación de herramientas esenciales y de pentesting
 RUN apt-get update && apt-get upgrade -y && apt-get dist-upgrade -y && \
-    apt-get install -y \
-    hash-identifier curl wget nano net-tools fping dnsutils iputils-ping \
-    nmap sqlmap openvpn wfuzz whatweb hydra python3 python3-pip \
+    apt-get install -y --no-install-recommends \
+    curl wget nano net-tools fping dnsutils inetutils-ping \
+    nmap openvpn wfuzz whatweb hydra python3 python3-pip \
     wireshark-common netcat-traditional hashcat john ruby-full git iproute2 \
-    metasploit-framework wordlists zsh tmux fonts-powerline tar seclists
+    metasploit-framework wordlists zsh tmux fonts-powerline tar seclists \
+    libcurl4-openssl-dev libxml2 libxml2-dev libxslt1-dev ruby-dev \
+    build-essential zlib1g-dev libffi-dev ca-certificates \
+    python3-setuptools python3-wheel libssl-dev gnupg lsb-release \
+    evil-winrm enum4linux python3-dev
 
-# Instalar herramientas que a veces fallan si no están disponibles por defecto
-RUN apt-get install -y \
-    evil-winrm || true && \
-    apt-get install -y enum4linux || true
+RUN apt-get install -y python3-dev python3-pycurl
 
-# Instalar Oh My Zsh y Powerlevel10k
-RUN sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended && \
-    git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ~/.oh-my-zsh/custom/themes/powerlevel10k
+# Limpieza (después de pycurl para evitar romper compilación)
+RUN apt-get remove -y libcurl4-openssl-dev libssl-dev python3-dev && \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Cambiar shell por defecto
-RUN chsh -s $(which zsh)
+# Instalación de WPScan
+RUN gem install wpscan && \
+    mkdir -p /root/.wpscan/db
 
+# Instalación de Oh My Zsh y Powerlevel10k
+RUN git clone https://github.com/ohmyzsh/ohmyzsh.git /root/.oh-my-zsh && \
+    git clone --depth=1 https://github.com/romkatv/powerlevel10k.git /root/.oh-my-zsh/custom/themes/powerlevel10k
 
-# pip ya viene preinstalado en Kali. Solo confirmamos que funcione.
-RUN python3 -m pip --version
-
-# Configurar tmux para usar zsh
-RUN echo "set-option -g default-shell /bin/zsh" >> ~/.tmux.conf
-
-# Copiar tus archivos personalizados
+# Copiar archivos de configuración personalizados
 COPY mi_zshrc.zsh /root/.zshrc
 COPY mi_p10k.zsh /root/.p10k.zsh
+COPY HTB /root/HTB
 
-# Configurar zsh para que use Powerlevel10k
-RUN echo 'source $ZSH/oh-my-zsh.sh' >> /root/.zshrc && \
-    echo 'source /root/.p10k.zsh' >> /root/.zshrc
+# Descomprimir diccionario rockyou
+RUN gunzip /usr/share/wordlists/rockyou.txt.gz
 
-WORKDIR /root
+# Configuración de tmux para usar Zsh como shell por defecto
+RUN echo "set-option -g default-shell /bin/zsh" >> /root/.tmux.conf
 
+# Establecer directorio de trabajo
+WORKDIR /root/HTB
+
+# Usar Zsh como shell principal al iniciar
 CMD ["zsh"]
+
